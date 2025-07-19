@@ -1,0 +1,1263 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>evandaru H. | Portfolio</title>
+    <link rel="icon" href="favicon.png" type="image/x-icon" />
+    <meta property="og:url" content="http://evandaru.my.id" />
+    <link rel="canonical" href="http://evandaru.my.id" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Portfolio | evandaru 🤞" />
+    <meta
+      name="description"
+      content="evandaru - Web Developer. Portfolio pribadi dengan desain brutalist retro dan fitur-fitur interaktif."
+    />
+    <meta
+      property="og:description"
+      content="Hi, I’m evandaru – Web developer who crafts clean, responsive, and aesthetic websites. Let’s build something cool together 🚀"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=VT323&display=swap"
+      rel="stylesheet"
+    />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+      /* =============================== */
+      /* == BRUTALIST STYLE OVERHAUL  == */
+      /* =============================== */
+      body {
+        font-family: "VT323", monospace;
+        background-color: #ffffff;
+        color: #000000;
+        background-image: linear-gradient(
+            to right,
+            #e0e0e0 1px,
+            transparent 1px
+          ),
+          linear-gradient(to bottom, #e0e0e0 1px, transparent 1px);
+        background-size: 20px 20px;
+      }
+
+      /* Gaya "Jendela Aplikasi" Utama */
+      .app-window {
+        width: 100%;
+        height: 100vh;
+        max-width: 900px;
+        background-color: #ffffff;
+        border: 2px solid #000000;
+        box-shadow: 8px 8px 0px 0px #000000;
+        display: flex;
+        flex-direction: column;
+      }
+
+      @media (min-width: 768px) {
+        .app-window {
+          height: 95vh;
+          max-height: 800px;
+        }
+      }
+
+      /* Title Bar dari Jendela */
+      .window-title-bar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-bottom: 2px solid #000000;
+        padding: 4px 12px;
+        flex-shrink: 0;
+      }
+
+      #current-file-label {
+        font-size: 1.2rem;
+        font-weight: bold;
+      }
+
+      .window-controls {
+        display: flex;
+        gap: 8px;
+      }
+
+      .control-circle {
+        width: 16px;
+        height: 16px;
+        border: 2px solid #000000;
+        border-radius: 50%;
+      }
+
+      /* Konten di dalam Jendela */
+      .window-content {
+        padding: 1rem;
+        flex-grow: 1;
+        overflow-y: auto;
+        min-height: 0;
+      }
+
+      /* Kotak Konten Internal (menggantikan .screen) */
+      .content-box {
+        border: 2px solid #000;
+        padding: 1rem;
+      }
+
+      .section-title {
+        background-color: #000000;
+        color: #ffffff;
+        padding: 0.1rem 0.5rem;
+        margin-bottom: 0.5rem;
+        display: inline-block;
+      }
+
+      /* Typewriter & Teks */
+      .typewriter h1 {
+        overflow: hidden;
+        border-right: 0.15em solid #000;
+        white-space: nowrap;
+        margin: 0;
+        letter-spacing: 0.1em;
+        animation: typing 2s steps(30, end), blink-caret 0.75s step-end infinite;
+      }
+
+      @keyframes typing {
+        from {
+          width: 0;
+        }
+
+        to {
+          width: 100%;
+        }
+      }
+
+      @keyframes blink-caret {
+        from,
+        to {
+          border-color: transparent;
+        }
+
+        50% {
+          border-color: #000;
+        }
+      }
+
+      /* Navigasi */
+      nav .btn {
+        background-color: #ffffff;
+        border: 2px solid #000;
+        color: #000;
+        border-radius: 0;
+        padding: 0.25rem 1rem;
+        box-shadow: none;
+      }
+
+      nav .btn.active,
+      nav .btn:hover {
+        background-color: #000;
+        color: #fff;
+      }
+
+      /* Tombol Umum */
+      .btn {
+        background-color: #ffffff;
+        border: 2px solid #000;
+        color: #000;
+        border-radius: 0;
+        padding: 0.5rem 1rem;
+        cursor: pointer;
+        text-align: center;
+      }
+
+      .btn:active {
+        transform: translate(2px, 2px);
+      }
+
+      .btn:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+        background-color: #cccccc;
+      }
+
+      /* Input Fields */
+      input[type="text"] {
+        border: 2px solid #000;
+        padding: 0.5rem;
+        background-color: #fff;
+        color: #000;
+        border-radius: 0;
+        width: 100%;
+      }
+
+      input[type="text"]:focus {
+        outline: 2px solid #000;
+        outline-offset: 2px;
+      }
+
+      /* To-Do List */
+      .task-item {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        cursor: pointer;
+        padding: 0.25rem;
+      }
+
+      .task-item:hover {
+        background-color: #e5e5e5;
+      }
+
+      .task-item .task-text.completed {
+        text-decoration: line-through;
+        opacity: 0.6;
+      }
+
+      .delete-task-btn {
+        background: none;
+        border: none;
+        color: #ef4444;
+        font-size: 1.25rem;
+        cursor: pointer;
+        opacity: 0.5;
+      }
+
+      .delete-task-btn:hover {
+        opacity: 1;
+      }
+
+      /* Footer Jendela */
+      .window-footer {
+        border-top: 2px solid #000;
+        padding: 0.75rem 1rem;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        flex-shrink: 0;
+      }
+
+      .footer-label {
+        font-size: 1rem;
+      }
+
+      .led-light {
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
+        border: 2px solid #000;
+        background-color: #4ade80;
+      }
+
+      /* Link Styling */
+      a {
+        text-decoration: underline;
+        font-weight: bold;
+      }
+
+      a:hover {
+        background-color: #000;
+        color: #fff;
+      }
+
+      /* === DARK MODE STYLES === */
+      body.dark {
+        background-color: #000000;
+        color: #ffffff;
+      }
+
+      .dark .app-window {
+        background-color: #000000;
+        border-color: #ffffff;
+        box-shadow: 8px 8px 0px 0px #ffffff;
+      }
+
+      .dark .window-title-bar,
+      .dark .window-footer {
+        border-color: #ffffff;
+      }
+
+      .dark .control-circle {
+        border-color: #ffffff;
+      }
+
+      .dark .content-box {
+        border-color: #ffffff;
+      }
+
+      .dark .section-title {
+        background-color: #ffffff;
+        color: #000000;
+      }
+
+      .dark .typewriter h1 {
+        border-right-color: #fff;
+      }
+
+      /* In dark mode, override the border color for the caret animation */
+      .dark .typewriter h1 {
+        animation: typing 2s steps(30, end),
+          blink-caret-dark 0.75s step-end infinite;
+      }
+
+      @keyframes blink-caret-dark {
+        from,
+        to {
+          border-color: transparent;
+        }
+
+        50% {
+          border-color: #fff;
+        }
+      }
+
+      .dark nav .btn {
+        background-color: #000;
+        border-color: #fff;
+        color: #fff;
+      }
+
+      .dark nav .btn.active,
+      .dark nav .btn:hover {
+        background-color: #fff;
+        color: #000;
+      }
+
+      .dark .btn {
+        background-color: #000;
+        border-color: #fff;
+        color: #fff;
+      }
+
+      .dark .btn:disabled {
+        background-color: #333;
+      }
+
+      .dark input[type="text"] {
+        background-color: #000;
+        border-color: #fff;
+        color: #fff;
+      }
+
+      .dark input[type="text"]:focus {
+        outline-color: #fff;
+      }
+
+      .dark .task-item:hover {
+        background-color: #222;
+      }
+
+      .dark .led-light {
+        border-color: #fff;
+      }
+
+      .dark a {
+        color: #fff;
+      }
+
+      .dark a:hover {
+        background-color: #fff;
+        color: #000;
+      }
+
+      .dark .chat-ai {
+        color: #a7f3d0;
+      }
+    </style>
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "Person",
+        "name": "evandaru",
+        "url": "https://www.evandaru.my.id",
+        "sameAs": ["https://github.com/evandaru", "https://t.me/evndaru"],
+        "jobTitle": "Web Developer",
+        "description": "evandaru adalah seorang web developer yang fokus pada desain bersih, estetis, dan UX modern."
+      }
+    </script>
+  </head>
+
+  <body class="md:min-h-screen flex items-center justify-center p-0 md:p-4">
+    <div class="app-window">
+      <!-- TITLE BAR -->
+      <header class="window-title-bar">
+        <div id="current-file-label" class="text-primary">USER_PROFILE.SH</div>
+        <div class="window-controls">
+          <div class="control-circle"></div>
+          <div class="control-circle"></div>
+        </div>
+      </header>
+
+      <!-- MAIN CONTENT AREA -->
+      <div class="flex-grow flex flex-col min-h-0">
+        <nav
+          class="flex gap-2 flex-wrap justify-start p-4 border-b-2 border-black dark:border-white"
+        >
+          <button data-target="profile" class="btn active">me.sh</button>
+          <button data-target="projects" class="btn">projects.sh</button>
+          <button data-target="about" class="btn">about.md</button>
+          <button data-target="pomodoro" class="btn">tools.exe</button>
+          <button data-target="chatbot" class="btn">ai_chat.exe</button>
+        </nav>
+
+        <main id="main-content" class="window-content">
+          <!-- KONTEN DINAMIS DIMASUKKAN DI SINI -->
+
+          <!-- === [KONTEN 1] USER_PROFILE.SH === -->
+          <div id="content-profile">
+            <div class="flex flex-col gap-4">
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div class="content-box flex items-center">
+                  <div class="typewriter">
+                    <h1 class="text-4xl sm:text-5xl">EVANDARU</h1>
+                    <p class="text-lg sm:text-xl">CODE & DESIGN ENTHUSIAST</p>
+                  </div>
+                </div>
+                <div class="content-box">
+                  <h3 class="section-title">[CHARACTER_MODEL]</h3>
+                  <div class="flex-grow flex items-center justify-center">
+                    <img src="anu.gif" alt="" />
+                  </div>
+                </div>
+              </div>
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div class="content-box">
+                  <h3 class="section-title">[CONTACT_LINKS]</h3>
+                  <ul>
+                    <li><a href="https://t.me/evndaru">> TELEGRAM</a></li>
+                  </ul>
+                </div>
+                <div class="content-box block">
+                  <h3 class="section-title">[SYSTEM_LOG]</h3>
+                  <ul>
+                    <li>> SYSTEM CHECK.... [OK]</li>
+                    <li>> LAST LOGIN: <span id="login-time"></span></li>
+                    <li>
+                      > STATUS: <span class="text-green-400">ONLINE</span>
+                    </li>
+                    <li>> QUOTE: "FOR INDEED, WITH HARDSHIP WILL BE EASE."</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- === [KONTEN 2] PROJECTS.SH === -->
+          <div id="content-projects" class="hidden">
+            <div class="content-box">
+              <h3 class="section-title">PROJECT_FILES</h3>
+              <ul class="flex flex-col gap-2">
+                <li>
+                  >
+                  <a href="#"
+                    >Gemini AI Chatbot – Conversational AI Powered by Gemini
+                    <span class="text-green-400">[COMPLETE]</span></a
+                  >
+                </li>
+                <li>
+                  >
+                  <a href="#"
+                    >Image Generative AI Bot – Create Stunning Visuals with AI
+                    <span class="text-green-400">[COMPLETE]</span></a
+                  >
+                </li>
+                <li>
+                  >
+                  <a href="#"
+                    >Interactive Invitation Platform – Send Invites with
+                    Style</a
+                  >
+                </li>
+                <li>
+                  >
+                  <a href="#"
+                    >Bilal Bin Rabah Landing Page – Sleek, Responsive, Impactful
+                    <span class="text-green-400">[COMPLETE]</span></a
+                  >
+                </li>
+                <li>
+                  >
+                  <a href="#"
+                    >SPP Money Manager – Simple & Smart Finance Tracking
+                    <span class="text-green-400">[COMPLETE]</span></a
+                  >
+                </li>
+                <li>
+                  >
+                  <a href="#"
+                    >Landing Page Slicing – Pixel Perfect Frontend Execution
+                    <span class="text-green-400">[COMPLETE]</span></a
+                  >
+                </li>
+                <li>
+                  >
+                  <a href="#"
+                    >Riasec Test Web App – Career Profiling with AdonisJS
+                    <span class="text-green-400">[COMPLETE]</span></a
+                  >
+                </li>
+                <li>
+                  >
+                  <a href="#"
+                    >CLI-Based Portfolio – Dev Resume in Terminal Style
+                    <span class="text-green-400">[COMPLETE]</span></a
+                  >
+                </li>
+                <li>
+                  >
+                  <a href="#"
+                    >... And Many More on My
+                    <strong
+                      ><a
+                        href="https://github.com/evandaru"
+                        target="_blank"
+                        class="underline text-blue-400"
+                        >GitHub</a
+                      ></strong
+                    ></a
+                  >
+                </li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- === [KONTEN 3] ABOUT.SH === -->
+          <div id="content-about" class="hidden">
+            <div class="content-box">
+              <h3 class="section-title">[README.MD]</h3>
+              <p class="text-base leading-relaxed">
+                > This is a personal portfolio designed with a retro
+                Command-Line Interface (CLI) aesthetic, reimagined with a
+                brutalist approach.
+                <br /><br />> Built with HTML, TailwindCSS for utility classes,
+                and vanilla JavaScript for interactivity, including a theme
+                switcher, a functional Pomodoro timer, and a to-do list with
+                local storage. <br /><br />> The goal was to create something
+                unique, functional, and fun.
+              </p>
+            </div>
+          </div>
+
+          <!-- === [KONTEN 4] POMODORO.SH === -->
+          <div id="content-pomodoro" class="hidden">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div
+                class="content-box flex flex-col items-center justify-center gap-2"
+              >
+                <h3 class="section-title">[POMODORO_TIMER]</h3>
+                <div class="flex gap-4">
+                  <button data-mode="pomodoro" class="btn pomo-mode-btn active">
+                    Focus
+                  </button>
+                  <button data-mode="shortBreak" class="btn pomo-mode-btn">
+                    Short
+                  </button>
+                  <button data-mode="longBreak" class="btn pomo-mode-btn">
+                    Long
+                  </button>
+                </div>
+                <h1 id="pomo-time" class="text-7xl md:text-8xl my-1">25:00</h1>
+                <p id="pomo-status" class="text-lg">TIME TO FOCUS!</p>
+                <div class="flex gap-4 mt-2">
+                  <button id="pomo-start" class="btn">START</button>
+                  <button id="pomo-pause" class="btn" disabled>PAUSE</button>
+                  <button id="pomo-reset" class="btn">RESET</button>
+                </div>
+              </div>
+              <div class="flex flex-col gap-4">
+                <div class="content-box">
+                  <h3 class="section-title">[SYSTEM_TIME]</h3>
+                  <div id="live-clock" class="text-4xl">--:--:--</div>
+                </div>
+                <div class="content-box flex flex-col">
+                  <h3 class="section-title">[TASK_LIST]</h3>
+                  <form id="todo-form" class="flex gap-2">
+                    <input
+                      type="text"
+                      id="todo-input"
+                      placeholder="> Add new task..."
+                      autocomplete="off"
+                    />
+                    <button type="submit" class="btn text-sm px-3">ADD</button>
+                  </form>
+                  <ul
+                    id="todo-list"
+                    class="flex-grow flex flex-col gap-1 mt-2 overflow-y-auto pr-2"
+                  ></ul>
+                </div>
+                <div class="content-box flex flex-col">
+                  <h3 class="section-title">[IMAGE_GENERATOR]</h3>
+                  <form id="image-gen-form" class="flex gap-2">
+                    <input
+                      type="text"
+                      id="image-prompt-input"
+                      placeholder="> Enter image prompt..."
+                      autocomplete="off"
+                    />
+                    <button
+                      type="submit"
+                      id="image-gen-btn"
+                      class="btn text-sm px-3"
+                    >
+                      GEN
+                    </button>
+                  </form>
+                  <div
+                    id="image-gen-status"
+                    class="text-sm italic h-5 mt-1"
+                  ></div>
+                  <div
+                    id="image-gallery-container"
+                    class="grid grid-cols-5 md:grid-cols-6 gap-2 mt-2 overflow-y-auto pr-2"
+                    style="max-height: 280px"
+                  >
+                    <!-- Gambar akan muncul di sini sebagai grid item -->
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- === [KONTEN 5] CHATBOT.SH === -->
+          <div id="content-chatbot" class="hidden h-full">
+            <div class="content-box flex flex-col h-full">
+              <h3 class="section-title">[AI_ASSISTANT]</h3>
+              <div
+                id="chat-history"
+                class="flex-grow overflow-y-auto pr-2 mb-2 min-h-0"
+              ></div>
+              <div id="chat-status" class="text-sm italic h-5"></div>
+              <form id="chat-form" class="flex gap-2">
+                <input
+                  type="text"
+                  id="chat-input"
+                  placeholder="> Type your message..."
+                  autocomplete="off"
+                />
+                <button type="submit" id="chat-submit" class="btn text-sm px-3">
+                  SEND
+                </button>
+                <button type="button" id="chat-clear" class="btn text-sm px-3">
+                  CLEAR
+                </button>
+              </form>
+            </div>
+          </div>
+        </main>
+      </div>
+
+      <!-- FOOTER / STATUS BAR -->
+      <footer class="window-footer">
+        <div class="flex items-center gap-2">
+          <a
+            href="https://blog.evandaru.my.id/"
+            target="_blank"
+            class="btn text-sm"
+            >BLOG</a
+          >
+          <button
+            id="theme-toggle"
+            type="button"
+            class="btn text-sm"
+            aria-label="Toggle Theme"
+          ></button>
+          <span class="footer-label">THEME</span>
+        </div>
+        <div class="flex items-center gap-2">
+          <span class="footer-label">PWR</span>
+          <div class="led-light"></div>
+        </div>
+      </footer>
+    </div>
+
+    <div
+      id="img_result"
+      class="hidden fixed inset-0 bg-black bg-opacity-80 flex items-center justify-center p-4 z-50"
+    >
+      <div class="relative w-full">
+        <img
+          id="img_result_display"
+          src=""
+          alt="Generated Image Result"
+          class="w-full max-h-[90vh] object-contain shadow-2xl"
+        />
+        <button
+          id="img_result_close"
+          title="Close image viewer"
+          class="absolute -top-5 -right-5 bg-white text-black font-bold text-2xl w-10 h-10 rounded-full border-2 border-black flex items-center justify-center shadow-lg hover:bg-red-500 hover:text-white transition-all duration-200"
+        >
+          ×
+        </button>
+        <!-- Tombol Delete Baru di Modal -->
+        <button
+          id="img_result_delete"
+          title="Delete this image"
+          class="btn absolute bottom-4 left-1/2 -translate-x-1/2 text-sm px-4 py-1 !bg-red-600 !text-white !border-white hover:!bg-red-700"
+        >
+          DELETE
+        </button>
+      </div>
+    </div>
+
+    <audio
+      id="finish-sound"
+      src="https://www.soundjay.com/phone/sounds/telephone-ring-02.mp3"
+      preload="auto"
+    ></audio>
+
+    <script type="module">
+      // Impor GoogleGenerativeAI
+      import { GoogleGenerativeAI } from "https://esm.run/@google/generative-ai";
+
+      // === DOM ELEMENTS ===
+      const themeToggleBtn = document.getElementById("theme-toggle");
+      const body = document.body;
+      const originalTitle = document.title;
+      const loginTimeEl = document.getElementById("login-time");
+      const liveClockEl = document.getElementById("live-clock");
+      const navButtons = document.querySelectorAll("nav .btn[data-target]");
+      const contentPanels = document.querySelectorAll('[id^="content-"]');
+      const currentFileLabel = document.getElementById("current-file-label");
+      const pomoTimeEl = document.getElementById("pomo-time");
+      const pomoStatusEl = document.getElementById("pomo-status");
+      const startBtn = document.getElementById("pomo-start");
+      const pauseBtn = document.getElementById("pomo-pause");
+      const resetBtn = document.getElementById("pomo-reset");
+      const modeButtons = document.querySelectorAll(".pomo-mode-btn");
+      const finishSound = document.getElementById("finish-sound");
+      const todoForm = document.getElementById("todo-form");
+      const todoInput = document.getElementById("todo-input");
+      const todoListEl = document.getElementById("todo-list");
+      const chatForm = document.getElementById("chat-form");
+      const chatInput = document.getElementById("chat-input");
+      const chatHistory = document.getElementById("chat-history");
+      const chatStatus = document.getElementById("chat-status");
+      const chatSubmitBtn = document.getElementById("chat-submit");
+      const chatClearBtn = document.getElementById("chat-clear");
+      const imageGenForm = document.getElementById("image-gen-form");
+      const imagePromptInput = document.getElementById("image-prompt-input");
+      const imageGenBtn = document.getElementById("image-gen-btn");
+      const imageGenStatus = document.getElementById("image-gen-status");
+      const imageGalleryContainer = document.getElementById(
+        "image-gallery-container"
+      );
+      const imgResultViewer = document.getElementById("img_result");
+      const imgResultDisplay = document.getElementById("img_result_display");
+      const imgResultCloseBtn = document.getElementById("img_result_close");
+      const imgResultDeleteBtn = document.getElementById("img_result_delete");
+
+      // === API & MODEL SETUP ===
+      const GEMINI_API_KEY = "AIzaSyBc2VHuC6Cb5o70Jeofy6FuR5r2oyOJATQ";
+      let genAI, textModel, imageGenModel;
+
+      if (GEMINI_API_KEY.includes("Ganti")) {
+        chatInput.placeholder = "API Key not set.";
+        [chatInput, chatSubmitBtn, chatClearBtn].forEach(
+          (el) => (el.disabled = true)
+        );
+        imagePromptInput.placeholder = "API Key not set.";
+        imageGenBtn.disabled = true;
+      } else {
+        genAI = new GoogleGenerativeAI(GEMINI_API_KEY);
+        textModel = genAI.getGenerativeModel({
+          model: "gemini-2.5-flash",
+          systemInstruction:
+            "Pakai bahasa Indonesia dengan sentuhan slang Gen Z. Lu adalah asisten yang super helpful, selalu jawab dengan satu paragraf singkat, padat, jelas, tapi tetep santai. Gak usah pake format aneh-aneh kayak bold, italic, atau markdown lainnya. Jawaban lu harus pure teks polos, tapi tetep catchy, relate, dan easy to digest.",
+        });
+
+        imageGenModel = genAI.getGenerativeModel({
+          model: "gemini-2.0-flash-preview-image-generation",
+        });
+      }
+
+      // === THEME LOGIC ===
+      const applyTheme = (theme) => {
+        body.classList.toggle("dark", theme === "dark");
+        themeToggleBtn.textContent = theme === "dark" ? "DARK" : "LIGHT";
+      };
+      const savedTheme =
+        localStorage.getItem("theme") ||
+        (window.matchMedia("(prefers-color-scheme: dark)").matches
+          ? "dark"
+          : "light");
+      applyTheme(savedTheme);
+      themeToggleBtn.addEventListener("click", () => {
+        const newTheme = body.classList.contains("dark") ? "light" : "dark";
+        applyTheme(newTheme);
+        localStorage.setItem("theme", newTheme);
+      });
+
+      // === REAL-TIME CLOCK LOGIC ===
+      function updateClocks() {
+        const now = new Date();
+        const date = `${now.getFullYear()}-${("0" + (now.getMonth() + 1)).slice(
+          -2
+        )}-${("0" + now.getDate()).slice(-2)}`;
+        const time = `${("0" + now.getHours()).slice(-2)}:${(
+          "0" + now.getMinutes()
+        ).slice(-2)}:${("0" + now.getSeconds()).slice(-2)}`;
+        if (loginTimeEl) loginTimeEl.textContent = `${date} ${time}`;
+        if (liveClockEl) liveClockEl.textContent = time;
+      }
+      updateClocks();
+      setInterval(updateClocks, 1000);
+
+      // === NAVIGATION LOGIC ===
+      navButtons.forEach((button) => {
+        button.addEventListener("click", () => {
+          const targetId = button.dataset.target;
+          if (!targetId) return;
+          contentPanels.forEach((panel) => panel.classList.add("hidden"));
+          document
+            .getElementById(`content-${targetId}`)
+            ?.classList.remove("hidden");
+          navButtons.forEach((btn) => btn.classList.remove("active"));
+          button.classList.add("active");
+          if (targetId !== "pomodoro") {
+            document.title = originalTitle;
+          } else {
+            updatePomoDisplay();
+          }
+          const fileNames = {
+            profile: "USER_PROFILE.SH",
+            projects: "PROJECTS.SH",
+            about: "ABOUT.MD",
+            pomodoro: "TOOLS.EXE",
+            chatbot: "AI_CHAT.EXE",
+          };
+          currentFileLabel.textContent = fileNames[targetId] || "UNKNOWN_FILE";
+        });
+      });
+
+      // === POMODORO TIMER LOGIC ===
+      const POMO_STATE_KEY = "evandaru_pomo_state";
+      const settings = { pomodoro: 25, shortBreak: 5, longBreak: 15 };
+      let pomoTimer;
+      let currentMode = "pomodoro";
+      let timeLeft = settings.pomodoro * 60;
+      let isRunning = false;
+      function savePomoState() {
+        localStorage.setItem(
+          POMO_STATE_KEY,
+          JSON.stringify({
+            timeLeft,
+            currentMode,
+            isRunning,
+            savedAt: Date.now(),
+          })
+        );
+      }
+      function updatePomoDisplay() {
+        const minutes = Math.floor(timeLeft / 60);
+        const seconds = timeLeft % 60;
+        pomoTimeEl.textContent = `${("0" + minutes).slice(-2)}:${(
+          "0" + seconds
+        ).slice(-2)}`;
+        if (document.getElementById("content-pomodoro").offsetParent !== null) {
+          document.title = `${pomoTimeEl.textContent} - ${pomoStatusEl.textContent}`;
+        }
+      }
+      function switchMode(newMode) {
+        currentMode = newMode;
+        modeButtons.forEach((btn) =>
+          btn.classList.toggle("active", btn.dataset.mode === newMode)
+        );
+        let statusText = "TIME TO FOCUS!";
+        if (newMode === "shortBreak") statusText = "TAKE A SHORT BREAK";
+        if (newMode === "longBreak") statusText = "TAKE A LONG BREAK";
+        pomoStatusEl.textContent = statusText;
+        resetTimer();
+      }
+      function startTimer() {
+        if (isRunning) return;
+        isRunning = true;
+        startBtn.disabled = true;
+        pauseBtn.disabled = false;
+        savePomoState();
+        pomoTimer = setInterval(() => {
+          timeLeft--;
+          updatePomoDisplay();
+          if (timeLeft <= 0) {
+            clearInterval(pomoTimer);
+            finishSound.play();
+            alert(`${currentMode.replace(/([A-Z])/g, " $1").trim()} finished!`);
+            resetTimer();
+          }
+        }, 1000);
+      }
+      function pauseTimer() {
+        if (!isRunning) return;
+        isRunning = false;
+        startBtn.disabled = false;
+        pauseBtn.disabled = true;
+        clearInterval(pomoTimer);
+        savePomoState();
+      }
+      function resetTimer() {
+        clearInterval(pomoTimer);
+        isRunning = false;
+        timeLeft = settings[currentMode] * 60;
+        updatePomoDisplay();
+        startBtn.disabled = false;
+        pauseBtn.disabled = true;
+        savePomoState();
+      }
+      function loadPomoState() {
+        const savedStateJSON = localStorage.getItem(POMO_STATE_KEY);
+        if (!savedStateJSON) {
+          updatePomoDisplay();
+          return;
+        }
+        const savedState = JSON.parse(savedStateJSON);
+        currentMode = savedState.currentMode;
+        timeLeft = savedState.timeLeft;
+        let wasRunning = savedState.isRunning;
+        if (wasRunning) {
+          timeLeft -= Math.round((Date.now() - savedState.savedAt) / 1000);
+        }
+        if (timeLeft <= 0) {
+          timeLeft = settings[currentMode] * 60;
+          wasRunning = false;
+        }
+        modeButtons.forEach((btn) =>
+          btn.classList.toggle("active", btn.dataset.mode === currentMode)
+        );
+        pomoStatusEl.textContent =
+          currentMode === "pomodoro"
+            ? "TIME TO FOCUS!"
+            : currentMode === "shortBreak"
+            ? "TAKE A SHORT BREAK"
+            : "TAKE A LONG BREAK";
+        updatePomoDisplay();
+        if (wasRunning) {
+          startTimer();
+        } else {
+          startBtn.disabled = false;
+          pauseBtn.disabled = true;
+        }
+      }
+      startBtn.addEventListener("click", startTimer);
+      pauseBtn.addEventListener("click", pauseTimer);
+      resetBtn.addEventListener("click", resetTimer);
+      modeButtons.forEach((btn) =>
+        btn.addEventListener("click", () => switchMode(btn.dataset.mode))
+      );
+      loadPomoState();
+
+      // === TO-DO LIST LOGIC ===
+      const STORAGE_KEY = "evandaru_cli_tasks";
+      let tasks = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
+      function saveTasks() {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(tasks));
+      }
+      function renderTasks() {
+        todoListEl.innerHTML = "";
+        tasks.forEach((task, index) => {
+          const li = document.createElement("li");
+          li.className = "task-item";
+          li.dataset.index = index;
+          const textSpan = document.createElement("span");
+          textSpan.className =
+            "task-text" + (task.completed ? " completed" : "");
+          textSpan.textContent = `> ${task.text}`;
+          const deleteBtn = document.createElement("button");
+          deleteBtn.className = "delete-task-btn";
+          deleteBtn.innerHTML = "×";
+          li.append(textSpan, deleteBtn);
+          li.addEventListener("click", () => toggleTask(index));
+          deleteBtn.addEventListener("click", (e) => {
+            e.stopPropagation();
+            deleteTask(index);
+          });
+          todoListEl.appendChild(li);
+        });
+      }
+      function addTask(text) {
+        tasks.push({ text, completed: false });
+        saveTasks();
+        renderTasks();
+      }
+      function toggleTask(index) {
+        tasks[index].completed = !tasks[index].completed;
+        saveTasks();
+        renderTasks();
+      }
+      function deleteTask(index) {
+        tasks.splice(index, 1);
+        saveTasks();
+        renderTasks();
+      }
+      todoForm.addEventListener("submit", (e) => {
+        e.preventDefault();
+        const text = todoInput.value.trim();
+        if (text) {
+          addTask(text);
+          todoInput.value = "";
+        }
+      });
+      renderTasks();
+
+      // === CHATBOT AI LOGIC ===
+      const CHAT_STORAGE_KEY = "evandaru_cli_chat_history";
+      let chatMessages =
+        JSON.parse(localStorage.getItem(CHAT_STORAGE_KEY)) || [];
+      function saveChatHistory() {
+        localStorage.setItem(CHAT_STORAGE_KEY, JSON.stringify(chatMessages));
+      }
+      function appendMessageToDOM(text, sender) {
+        const div = document.createElement("div");
+        div.className = `chat-message ${
+          sender === "user" ? "chat-user" : "chat-ai"
+        }`;
+        div.textContent = `${sender === "user" ? "> USER" : "> AI"}: ${text}`;
+        chatHistory.appendChild(div);
+        chatHistory.scrollTop = chatHistory.scrollHeight;
+      }
+      function addMessageToHistory(text, sender) {
+        if (chatMessages.length === 0) chatHistory.innerHTML = "";
+        chatMessages.push({ text, sender });
+        saveChatHistory();
+        appendMessageToDOM(text, sender);
+      }
+      function renderChatHistory() {
+        chatHistory.innerHTML = "";
+        if (chatMessages.length === 0)
+          appendMessageToDOM(
+            "Hello! Ask me anything. I'm connected to Google's Gemini.",
+            "ai"
+          );
+        else
+          chatMessages.forEach((msg) =>
+            appendMessageToDOM(msg.text, msg.sender)
+          );
+      }
+      chatForm.addEventListener("submit", async (e) => {
+        e.preventDefault();
+        const userInput = chatInput.value.trim();
+        if (!userInput || !textModel) return;
+        addMessageToHistory(userInput, "user");
+        chatInput.value = "";
+        chatStatus.textContent = "AI is thinking...";
+        [chatInput, chatSubmitBtn, chatClearBtn].forEach(
+          (el) => (el.disabled = true)
+        );
+        try {
+          const result = await textModel.generateContent(userInput);
+          const response = await result.response;
+          addMessageToHistory(
+            response
+              .text()
+              .replace(/\*\*|\*/g, "")
+              .replace(/^\s*[-*]\s+/gm, ""),
+            "ai"
+          );
+        } catch (error) {
+          console.error("Gemini API Error:", error);
+          addMessageToHistory(
+            "Sorry, an error occurred. Check the console (F12).",
+            "ai"
+          );
+        } finally {
+          chatStatus.textContent = "";
+          [chatInput, chatSubmitBtn, chatClearBtn].forEach(
+            (el) => (el.disabled = false)
+          );
+          chatInput.focus();
+        }
+      });
+      chatClearBtn.addEventListener("click", () => {
+        if (confirm("Clear chat history?")) {
+          chatMessages = [];
+          saveChatHistory();
+          renderChatHistory();
+          chatInput.focus();
+        }
+      });
+      renderChatHistory();
+
+      // === IMAGE GENERATOR LOGIC ===
+      const IMAGE_STORAGE_KEY = "evandaru_cli_images";
+      let generatedImages =
+        JSON.parse(localStorage.getItem(IMAGE_STORAGE_KEY)) || [];
+
+      function saveImages() {
+        localStorage.setItem(
+          IMAGE_STORAGE_KEY,
+          JSON.stringify(generatedImages)
+        );
+      }
+
+      function renderImages() {
+        imageGalleryContainer.innerHTML = "";
+        if (generatedImages.length === 0) {
+          imageGalleryContainer.innerHTML = `<p class="text-sm opacity-60"></p>`;
+          return;
+        }
+        generatedImages
+          .slice()
+          .reverse()
+          .forEach((image) => {
+            // Setiap gambar hanya sebuah <img> di dalam <div>
+            const imageWrapper = document.createElement("div");
+            imageWrapper.className =
+              "aspect-square border-2 border-black dark:border-white p-1";
+
+            const imgEl = document.createElement("img");
+            imgEl.src = image.base64;
+            imgEl.alt = image.prompt;
+            imgEl.className =
+              "w-full h-full object-contain cursor-pointer hover:opacity-75 transition-opacity";
+            imgEl.title = `Prompt: ${image.prompt}`;
+
+            // Event listener untuk membuka modal
+            imgEl.addEventListener("click", () => {
+              imgResultDisplay.src = image.base64;
+              // Simpan ID gambar yang sedang aktif di modal
+              imgResultViewer.dataset.currentId = image.id;
+              imgResultViewer.classList.remove("hidden");
+            });
+
+            imageWrapper.appendChild(imgEl);
+            imageGalleryContainer.appendChild(imageWrapper);
+          });
+      }
+
+      imageGenForm.addEventListener("submit", async (e) => {
+        e.preventDefault();
+        const userPrompt = imagePromptInput.value.trim();
+        if (!userPrompt || !imageGenModel) return;
+
+        imageGenBtn.disabled = true;
+        imagePromptInput.disabled = true;
+        imageGenStatus.textContent = "Generating image...";
+
+        const fullPrompt = `
+Buatlah gambar dalam gaya pixel art 8-bit hitam putih (monochrome), dengan latar belakang putih polos. Prompt utama: ${userPrompt} Output harus sederhana, bergaya klasik, dan konsisten dengan estetika pixel 8-bit hitam putih.
+`;
+        try {
+          const result = await imageGenModel.generateContent({
+            contents: [
+              {
+                parts: [
+                  {
+                    text: fullPrompt,
+                  },
+                ],
+              },
+            ],
+            generationConfig: {
+              // [PERBAIKAN KRUSIAL] Urutan diubah sesuai pesan error
+              responseModalities: ["IMAGE", "TEXT"],
+            },
+          });
+
+          const response = await result.response;
+          const parts = response.candidates?.[0]?.content?.parts;
+
+          if (!parts) {
+            throw new Error("API did not return any parts.");
+          }
+
+          const imagePart = parts.find((part) => part.inlineData);
+
+          if (imagePart && imagePart.inlineData) {
+            const base64Data = imagePart.inlineData.data;
+            const mimeType = imagePart.inlineData.mimeType;
+
+            const newImage = {
+              id: Date.now(),
+              prompt: userPrompt,
+              base64: `data:${mimeType};base64,${base64Data}`,
+            };
+
+            generatedImages.push(newImage);
+            saveImages();
+            renderImages();
+            imageGenStatus.textContent = "Success!";
+            setTimeout(() => {
+              imageGenStatus.textContent = "";
+            }, 3000);
+          } else {
+            const textPart = parts.find((part) => part.text);
+            let errorMessage = "Failed: No image was generated.";
+            if (textPart) {
+              errorMessage = `API Info: ${textPart.text.substring(0, 100)}`;
+              console.warn(
+                "Image generation returned text only:",
+                textPart.text
+              );
+            }
+            imageGenStatus.textContent = errorMessage;
+          }
+        } catch (error) {
+          console.error("Image Generation Error:", error);
+          if (error.message.includes("SAFETY")) {
+            imageGenStatus.textContent = "Blocked due to safety policy.";
+          } else if (error.message.includes("400")) {
+            imageGenStatus.textContent = "Bad Request. Check console.";
+          } else {
+            imageGenStatus.textContent = "Error. Check console (F12).";
+          }
+        } finally {
+          imageGenBtn.disabled = false;
+          imagePromptInput.disabled = false;
+          imagePromptInput.value = "";
+          imagePromptInput.focus();
+        }
+      });
+
+      imageGalleryContainer.addEventListener("click", (e) => {
+        if (e.target.tagName === "BUTTON" && e.target.dataset.id) {
+          const imageId = parseInt(e.target.dataset.id, 10);
+          if (confirm("Are you sure you want to delete this image?")) {
+            generatedImages = generatedImages.filter(
+              (img) => img.id !== imageId
+            );
+            saveImages();
+            renderImages();
+          }
+        }
+      });
+
+      imgResultDeleteBtn.addEventListener("click", () => {
+        // Ambil ID dari gambar yang sedang ditampilkan di modal
+        const imageId = parseInt(imgResultViewer.dataset.currentId, 10);
+        if (!imageId) return;
+
+        if (
+          confirm("Are you sure you want to permanently delete this image?")
+        ) {
+          // Hapus gambar dari array
+          generatedImages = generatedImages.filter((img) => img.id !== imageId);
+          // Simpan perubahan
+          saveImages();
+          // Render ulang galeri
+          renderImages();
+          // Tutup modal
+          closeImageViewer();
+        }
+      });
+
+      renderImages();
+
+      function closeImageViewer() {
+        imgResultViewer.classList.add("hidden");
+        imgResultViewer.classList.remove("flex");
+        imgResultDisplay.src = "";
+      }
+
+      imgResultCloseBtn.addEventListener("click", closeImageViewer);
+
+      imgResultViewer.addEventListener("click", (e) => {
+        if (e.target === imgResultViewer) {
+          closeImageViewer();
+        }
+      });
+
+      document.addEventListener("keydown", (e) => {
+        if (
+          e.key === "Escape" &&
+          !imgResultViewer.classList.contains("hidden")
+        ) {
+          closeImageViewer();
+        }
+      });
+    </script>
+  </body>
+</html>
