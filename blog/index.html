@@ -1,0 +1,442 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>THE HUB | BRUTALIST EDITION</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        darkMode: 'class',
+        theme: {
+          extend: {}
+        }
+      }
+    </script>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+    />
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;700&display=swap");
+
+      :root {
+        --b-bg: #ffffff;
+        --b-text: #000000;
+        --b-border: #000000;
+        --b-card: #ffffff;
+        --b-yellow: #facc15;
+      }
+
+      html.dark {
+        --b-bg: #121212;
+        --b-text: #f5f5f5;
+        --b-border: #e5e5e5;
+        --b-card: #1e1e1e;
+        --b-yellow: #ca8a04;
+      }
+
+      body {
+        font-family: "Space Grotesk", sans-serif;
+        background-color: var(--b-bg);
+        color: var(--b-text);
+        transition: background-color 0.3s, color 0.3s;
+      }
+
+      /* Brutalist Style Utilities */
+      .brutalist-border {
+        border: 4px solid var(--b-border);
+      }
+
+      .brutalist-shadow {
+        box-shadow: 8px 8px 0px 0px var(--b-border);
+      }
+
+      .brutalist-shadow-sm {
+        box-shadow: 4px 4px 0px 0px var(--b-border);
+      }
+
+      .brutalist-card {
+        background: var(--b-card);
+        border: 4px solid var(--b-border);
+        box-shadow: 8px 8px 0px 0px var(--b-border);
+        transition: all 0.1s;
+      }
+
+      .brutalist-card:hover {
+        transform: translate(-2px, -2px);
+        box-shadow: 12px 12px 0px 0px var(--b-border);
+      }
+
+      .brutalist-btn {
+        background: var(--b-card);
+        color: var(--b-text);
+        border: 3px solid var(--b-border);
+        box-shadow: 4px 4px 0px 0px var(--b-border);
+        transition: all 0.1s;
+        cursor: pointer;
+      }
+
+      .brutalist-btn:active {
+        transform: translate(2px, 2px);
+        box-shadow: 0px 0px 0px 0px var(--b-border);
+      }
+
+      .brutalist-btn.active {
+        background: var(--b-yellow);
+        color: #000;
+        box-shadow: 0px 0px 0px 0px var(--b-border);
+        transform: translate(2px, 2px);
+      }
+
+      .toast {
+        visibility: hidden;
+        background-color: var(--b-yellow);
+        color: #000;
+        border: 3px solid var(--b-border);
+        font-weight: bold;
+        text-align: center;
+        padding: 16px;
+        position: fixed;
+        z-index: 100;
+        right: 20px;
+        bottom: 30px;
+        box-shadow: 6px 6px 0px 0px var(--b-border);
+      }
+
+      .toast.show {
+        visibility: visible;
+        animation: slidein 0.3s;
+      }
+
+      @keyframes slidein {
+        from {
+          right: -300px;
+          opacity: 0;
+        }
+        to {
+          right: 20px;
+          opacity: 1;
+        }
+      }
+
+      /* Custom Scrollbar */
+      ::-webkit-scrollbar {
+        width: 8px;
+        height: 8px;
+      }
+      ::-webkit-scrollbar-track {
+        background: var(--b-bg);
+        border-left: 2px solid var(--b-border);
+        border-top: 2px solid var(--b-border);
+      }
+      ::-webkit-scrollbar-thumb {
+        background: var(--b-border);
+      }
+      
+      .scrollbar-hide::-webkit-scrollbar {
+        display: none;
+      }
+      .scrollbar-hide {
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+      }
+    </style>
+  </head>
+  <body class="min-h-screen pb-20">
+    <!-- Header Section -->
+    <header class="border-b-8 border-black dark:border-[#e5e5e5] bg-[#facc15] dark:bg-[#ca8a04] py-6 px-4 md:py-8 transition-colors">
+      <div class="max-w-6xl mx-auto">
+        <div class="flex flex-col md:flex-row justify-between items-start md:items-end gap-4 md:gap-6">
+          <div class="w-full md:w-auto">
+            <h1 class="text-5xl sm:text-6xl md:text-8xl font-black uppercase leading-none tracking-tighter text-black">
+              The Hub<span class="text-white" style="-webkit-text-stroke: 2px var(--b-border)">.</span>
+            </h1>
+            <p class="mt-2 md:mt-4 text-xs sm:text-sm md:text-xl font-bold bg-white text-black inline-block px-3 py-1 md:px-4 brutalist-border uppercase tracking-widest">
+              Personal Bookmark & AI Prompt Manager
+            </p>
+          </div>
+
+          <div class="w-full md:w-auto flex items-center gap-4 mt-2 md:mt-0">
+            <button id="darkModeToggle" class="brutalist-btn p-3 md:p-3 text-lg md:text-xl !bg-white !text-black flex-shrink-0" aria-label="Toggle Dark Mode">
+              <i class="fas fa-moon" id="darkModeIcon"></i>
+            </button>
+            <div class="relative w-full">
+              <input
+                type="text"
+                id="searchInput"
+                placeholder="CARI SESUATU... (CTRL+K)"
+                class="w-full md:w-80 px-4 py-3 bg-white dark:bg-[#1e1e1e] text-black dark:text-[#f5f5f5] brutalist-border focus:bg-cyan-300 dark:focus:bg-cyan-800 outline-none font-bold text-base md:text-lg placeholder:text-black/50 dark:placeholder:text-[#f5f5f5]/50 transition-colors"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- Navigation Tabs & Filters -->
+    <div class="max-w-6xl mx-auto px-4 mt-6 md:mt-12 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+      <nav class="flex gap-2 md:gap-4 overflow-x-auto w-full md:w-auto pb-2 scrollbar-hide">
+        <button
+          onclick="switchTab('websites')"
+          id="btn-websites"
+          class="brutalist-btn active px-5 py-2 md:px-8 md:py-3 font-black text-sm md:text-xl uppercase italic whitespace-nowrap"
+        >
+          web
+        </button>
+        <button
+          onclick="switchTab('prompts')"
+          id="btn-prompts"
+          class="brutalist-btn px-5 py-2 md:px-8 md:py-3 font-black text-sm md:text-xl uppercase italic whitespace-nowrap"
+        >
+          AI
+        </button>
+      </nav>
+
+      <!-- Tags Filter -->
+      <div class="w-full md:w-auto overflow-x-auto pb-2 scrollbar-hide">
+        <div id="tagsContainer" class="flex gap-2 min-w-max items-center">
+          <!-- Tags will be injected here -->
+        </div>
+      </div>
+    </div>
+
+    <main class="max-w-6xl mx-auto px-4 mt-6 md:mt-8">
+      <!-- Section Websites -->
+      <section id="section-websites" class="tab-content">
+        <div id="websiteGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
+          <!-- Website cards will be injected here -->
+        </div>
+      </section>
+
+      <!-- Section Prompts -->
+      <section id="section-prompts" class="tab-content hidden">
+        <div id="promptGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
+          <!-- Prompt cards will be injected here -->
+        </div>
+      </section>
+    </main>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="toast uppercase italic text-sm md:text-base">COPY BERHASIL! ⚡</div>
+
+    <!-- Hidden input for clipboard fallback -->
+    <textarea id="copyHelper" class="fixed -top-full opacity-0"></textarea>
+
+    <!-- External Data -->
+    <script src="data.js"></script>
+
+    <script>
+      let activeTab = 'websites';
+      let currentFilter = '';
+      let activeTag = null;
+
+      // Dark Mode Setup
+      const darkModeToggle = document.getElementById('darkModeToggle');
+      const darkModeIcon = document.getElementById('darkModeIcon');
+      
+      if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+        document.documentElement.classList.add('dark');
+        darkModeIcon.classList.replace('fa-moon', 'fa-sun');
+      }
+
+      darkModeToggle.addEventListener('click', () => {
+        document.documentElement.classList.toggle('dark');
+        if (document.documentElement.classList.contains('dark')) {
+          localStorage.theme = 'dark';
+          darkModeIcon.classList.replace('fa-moon', 'fa-sun');
+        } else {
+          localStorage.theme = 'light';
+          darkModeIcon.classList.replace('fa-sun', 'fa-moon');
+        }
+        renderWebsites(currentFilter);
+        renderPrompts(currentFilter);
+      });
+
+      function renderTags() {
+        const container = document.getElementById("tagsContainer");
+        container.innerHTML = `<span class="font-bold text-sm mr-2 uppercase"><i class="fas fa-tags"></i></span>`;
+        
+        let allTags = new Set();
+        const dataSource = activeTab === 'websites' ? websites : prompts;
+        
+        dataSource.forEach(item => {
+          if(item.tags) {
+            item.tags.forEach(tag => allTags.add(tag));
+          }
+        });
+
+        // Add 'All' tag
+        const allBtn = document.createElement("button");
+        allBtn.className = `brutalist-btn px-3 py-1 font-bold text-xs md:text-sm uppercase ${activeTag === null ? 'active !bg-[#facc15] !text-black' : ''}`;
+        allBtn.textContent = 'ALL';
+        allBtn.onclick = () => filterByTag(null);
+        container.appendChild(allBtn);
+
+        Array.from(allTags).sort().forEach(tag => {
+          const btn = document.createElement("button");
+          btn.className = `brutalist-btn px-3 py-1 font-bold text-xs md:text-sm uppercase ${activeTag === tag ? 'active !bg-[#facc15] !text-black' : ''}`;
+          btn.textContent = tag;
+          btn.onclick = () => filterByTag(tag);
+          container.appendChild(btn);
+        });
+      }
+
+      function filterByTag(tag) {
+        activeTag = tag;
+        renderTags();
+        if(activeTab === 'websites') renderWebsites(currentFilter);
+        else renderPrompts(currentFilter);
+      }
+
+      function switchTab(tab) {
+        activeTab = tab;
+        activeTag = null; // Reset tag filter on tab switch
+        
+        document
+          .querySelectorAll(".tab-content")
+          .forEach((s) => s.classList.add("hidden"));
+        document
+          .querySelectorAll("nav button")
+          .forEach((b) => b.classList.remove("active"));
+
+        document.getElementById(`section-${tab}`).classList.remove("hidden");
+        document.getElementById(`btn-${tab}`).classList.add("active");
+        
+        renderTags();
+        if(tab === 'websites') renderWebsites(currentFilter);
+        else renderPrompts(currentFilter);
+      }
+
+      function renderWebsites(filter = "") {
+        const grid = document.getElementById("websiteGrid");
+        grid.innerHTML = "";
+
+        const filtered = websites.filter(
+          (w) => {
+            const searchTerm = filter.toLowerCase();
+            const matchesSearch = w.name.toLowerCase().includes(searchTerm) || 
+                                  (w.category && w.category.toLowerCase().includes(searchTerm)) ||
+                                  (w.description && w.description.toLowerCase().includes(searchTerm)) ||
+                                  (w.url && w.url.toLowerCase().includes(searchTerm));
+            const matchesTag = activeTag ? (w.tags && w.tags.includes(activeTag)) : true;
+            return matchesSearch && matchesTag;
+          }
+        );
+
+        filtered.forEach((web) => {
+          // In dark mode, pure white backgrounds might be too bright for cards, let's use a dark class fallback
+          const cardColor = document.documentElement.classList.contains('dark') && web.color.includes('bg-white') ? 'bg-[#262626] text-white' : web.color + ' text-black';
+          const isBrand = web.icon.includes('github') || web.icon.includes('youtube') || web.icon.includes('stack-overflow') || web.icon.includes('discord') || web.icon.includes('canva');
+          const iconPrefix = isBrand ? 'fab' : 'fas';
+          
+          const card = `
+                    <a href="${web.url}" target="_blank" class="brutalist-card p-4 md:p-6 block group h-full">
+                        <div class="flex items-center gap-4">
+                            <div class="min-w-[48px] md:min-w-[56px] w-12 h-12 md:w-14 md:h-14 brutalist-border ${cardColor} flex items-center justify-center text-xl md:text-2xl group-hover:rotate-6 transition-transform">
+                                <i class="${iconPrefix} ${web.icon}"></i>
+                            </div>
+                            <div class="overflow-hidden">
+                                <h3 class="font-black text-base md:text-xl uppercase tracking-tighter truncate">${web.name}</h3>
+                                ${web.description ? `<p class="text-[10px] md:text-xs font-bold uppercase opacity-80 truncate">${web.description}</p>` : ''}
+                                ${web.tags ? `<div class="flex flex-wrap gap-1 mt-2">
+                                  ${web.tags.slice(0, 2).map(t => `<span class="text-[9px] md:text-[10px] bg-black text-white dark:bg-[#e5e5e5] dark:text-black px-1 py-0.5 uppercase font-bold">${t}</span>`).join('')}
+                                </div>` : ''}
+                            </div>
+                        </div>
+                    </a>
+                `;
+          grid.innerHTML += card;
+        });
+      }
+
+      function renderPrompts(filter = "") {
+        const grid = document.getElementById("promptGrid");
+        grid.innerHTML = "";
+
+        const filtered = prompts.filter(
+          (p) => {
+            const searchTerm = filter.toLowerCase();
+            const matchesSearch = p.title.toLowerCase().includes(searchTerm) || 
+                                  (p.description && p.description.toLowerCase().includes(searchTerm)) ||
+                                  (p.text && p.text.toLowerCase().includes(searchTerm));
+            const matchesTag = activeTag ? (p.tags && p.tags.includes(activeTag)) : true;
+            return matchesSearch && matchesTag;
+          }
+        );
+
+        filtered.forEach((p) => {
+          const originalIndex = prompts.indexOf(p);
+          const headColor = p.color || "bg-white";
+          const card = `
+                    <div class="brutalist-card overflow-hidden flex flex-col h-full">
+                        <div class="p-4 md:p-5 ${headColor} border-b-4 border-black dark:border-[#e5e5e5] text-black">
+                            <div class="flex justify-between items-start gap-2">
+                                <h3 class="font-black text-lg md:text-2xl uppercase italic tracking-tighter leading-tight">${p.title}</h3>
+                                <i class="fas fa-bolt text-black text-lg md:text-xl flex-shrink-0"></i>
+                            </div>
+                            ${p.description ? `<p class="text-xs md:text-sm font-bold mt-2 uppercase opacity-80 line-clamp-2">${p.description}</p>` : ''}
+                            ${p.tags ? `<div class="flex flex-wrap gap-1 mt-3">
+                                  ${p.tags.map(t => `<span class="text-[9px] md:text-[10px] border-2 border-black px-1.5 py-0.5 uppercase font-bold bg-white/50">${t}</span>`).join('')}
+                            </div>` : ''}
+                        </div>
+                        <div class="p-4 md:p-5 flex flex-col flex-grow bg-[var(--b-card)]">
+                            <div class="bg-slate-100 dark:bg-[#121212] brutalist-border p-3 mb-4 flex-grow">
+                                <p class="text-xs md:text-sm font-bold italic line-clamp-4 text-black/80 dark:text-[#f5f5f5]/80">"${p.text}"</p>
+                            </div>
+                            <button onclick="copyToClipboard('${originalIndex}')" class="w-full brutalist-btn bg-[#facc15] dark:bg-[#ca8a04] py-2 md:py-3 font-black uppercase text-sm md:text-lg hover:bg-black hover:text-[#facc15] dark:text-black dark:hover:text-black dark:hover:bg-[#facc15] transition-colors">
+                                SALIN <i class="fas fa-copy ml-2"></i>
+                            </button>
+                        </div>
+                    </div>
+                `;
+          grid.innerHTML += card;
+        });
+      }
+
+      function copyToClipboard(index) {
+        const promptText = prompts[index].text;
+        const helper = document.getElementById("copyHelper");
+        helper.value = promptText;
+        helper.select();
+
+        try {
+          document.execCommand("copy");
+          showToast();
+        } catch (err) {
+          console.error("Gagal menyalin", err);
+        }
+      }
+
+      function showToast() {
+        const toast = document.getElementById("toast");
+        toast.className = "toast show text-sm md:text-base";
+        setTimeout(() => {
+          toast.className = "toast text-sm md:text-base";
+        }, 2500);
+      }
+
+      // Initial Render
+      switchTab('websites');
+
+      // Search functionality
+      const searchInput = document.getElementById('searchInput');
+      searchInput.addEventListener('input', (e) => {
+        currentFilter = e.target.value;
+        if (activeTab === 'websites') {
+          renderWebsites(currentFilter);
+        } else {
+          renderPrompts(currentFilter);
+        }
+      });
+
+      // Keyboard Shortcut (Ctrl+K or Cmd+K)
+      document.addEventListener('keydown', (e) => {
+        if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
+          e.preventDefault();
+          searchInput.focus();
+        }
+      });
+    </script>
+  </body>
+</html>
