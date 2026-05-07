@@ -85,6 +85,14 @@ const websites = [
     tags: ["karir"],
     color: "bg-yellow-400",
   },
+  {
+    name: "SVG to Ico",
+    url: "https://www.freeconvert.com/svg-to-ico",
+    description: "ini buat vibe coding",
+    icon: "fa-globe",
+    tags: ["converter"],
+    color: "bg-yellow-400",
+  },
 ];
 
 // Data Prompt AI
