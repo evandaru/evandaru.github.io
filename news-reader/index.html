@@ -1,0 +1,774 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>BRUTAL RSS READER</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script
+      defer
+      src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"
+    ></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=IBM+Plex+Mono:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        font-family: "IBM Plex Mono", "Space Mono", monospace;
+      }
+
+      .brutal-border {
+        border: 4px solid #000;
+      }
+      .brutal-border-thick {
+        border: 6px solid #000;
+      }
+      .brutal-shadow {
+        box-shadow: 8px 8px 0px #000;
+      }
+      .brutal-shadow-sm {
+        box-shadow: 4px 4px 0px #000;
+      }
+      .brutal-shadow-lg {
+        box-shadow: 12px 12px 0px #000;
+      }
+
+      .brutal-btn {
+        border: 4px solid #000;
+        box-shadow: 6px 6px 0px #000;
+        transition: all 0.1s ease;
+        cursor: pointer;
+      }
+      .brutal-btn:hover {
+        transform: translate(2px, 2px);
+        box-shadow: 4px 4px 0px #000;
+      }
+      .brutal-btn:active {
+        transform: translate(6px, 6px);
+        box-shadow: 0px 0px 0px #000;
+      }
+
+      .brutal-input {
+        border: 4px solid #000;
+        box-shadow: 6px 6px 0px #000;
+        transition: all 0.1s ease;
+      }
+      .brutal-input:focus {
+        outline: none;
+        transform: translate(2px, 2px);
+        box-shadow: 4px 4px 0px #000;
+      }
+
+      .brutal-card {
+        border: 4px solid #000;
+        box-shadow: 8px 8px 0px #000;
+        transition: all 0.15s ease;
+      }
+      .brutal-card:hover {
+        transform: translate(-2px, -2px);
+        box-shadow: 10px 10px 0px #000;
+      }
+
+      .marquee-container {
+        overflow: hidden;
+        white-space: nowrap;
+      }
+      .marquee-text {
+        display: inline-block;
+        animation: marquee 20s linear infinite;
+      }
+      @keyframes marquee {
+        0% {
+          transform: translateX(100%);
+        }
+        100% {
+          transform: translateX(-100%);
+        }
+      }
+
+      .stripes-bg {
+        background: repeating-linear-gradient(
+          -45deg,
+          #ff6b6b,
+          #ff6b6b 10px,
+          #fff 10px,
+          #fff 20px
+        );
+      }
+      .stripes-bg-dark {
+        background: repeating-linear-gradient(
+          -45deg,
+          #000,
+          #000 10px,
+          #ffe66d 10px,
+          #ffe66d 20px
+        );
+      }
+      .dots-bg {
+        background-image: radial-gradient(#000 2px, transparent 2px);
+        background-size: 20px 20px;
+      }
+
+      [x-cloak] {
+        display: none !important;
+      }
+
+      .entry-content img {
+        max-width: 100%;
+        height: auto;
+        border: 3px solid #000;
+      }
+      .entry-content a {
+        color: #ff006e;
+        text-decoration: underline;
+        font-weight: 700;
+      }
+      .entry-content a:hover {
+        background: #ff006e;
+        color: #fff;
+      }
+      .entry-content p {
+        margin-bottom: 0.75rem;
+      }
+      .entry-content h1,
+      .entry-content h2,
+      .entry-content h3 {
+        margin-top: 1rem;
+        margin-bottom: 0.5rem;
+        font-weight: 700;
+      }
+      .entry-content ul,
+      .entry-content ol {
+        margin-left: 1.5rem;
+        margin-bottom: 0.75rem;
+      }
+      .entry-content blockquote {
+        border-left: 4px solid #000;
+        padding-left: 1rem;
+        margin: 0.75rem 0;
+        font-style: italic;
+      }
+      .entry-content pre,
+      .entry-content code {
+        background: #f0f0f0;
+        border: 2px solid #000;
+        padding: 0.25rem 0.5rem;
+      }
+
+      .glitch-text:hover {
+        animation: glitch 0.3s ease infinite;
+      }
+      @keyframes glitch {
+        0% {
+          transform: translate(0);
+        }
+        20% {
+          transform: translate(-2px, 2px);
+        }
+        40% {
+          transform: translate(2px, -2px);
+        }
+        60% {
+          transform: translate(-1px, -1px);
+        }
+        80% {
+          transform: translate(1px, 1px);
+        }
+        100% {
+          transform: translate(0);
+        }
+      }
+
+      ::-webkit-scrollbar {
+        width: 16px;
+      }
+      ::-webkit-scrollbar-track {
+        background: #ffe66d;
+        border-left: 4px solid #000;
+      }
+      ::-webkit-scrollbar-thumb {
+        background: #000;
+        border: 2px solid #ffe66d;
+      }
+      ::-webkit-scrollbar-thumb:hover {
+        background: #ff006e;
+      }
+    </style>
+  </head>
+  <body class="bg-white min-h-screen">
+    <div x-data="rssReader()" x-cloak>
+      <!-- HEADER MARQUEE -->
+      <div
+        class="stripes-bg-dark brutal-border-thick"
+        style="border-bottom: none"
+      >
+        <div class="marquee-container py-2">
+          <span
+            class="marquee-text text-white text-lg font-bold tracking-wider"
+          >
+            ★ BRUTAL RSS READER ★ PASTE ANY RSS FEED URL ★ HIT ENTER ★ READ THE
+            WEB ★ NO BULLSHIT ★ BRUTAL RSS READER ★ PASTE ANY RSS FEED URL ★ HIT
+            ENTER ★ READ THE WEB ★ NO BULLSHIT ★
+          </span>
+        </div>
+      </div>
+
+      <!-- HEADER -->
+      <header class="brutal-border-thick bg-yellow-300">
+        <div class="max-w-7xl mx-auto px-4 py-6 md:py-8">
+          <div
+            class="flex flex-col md:flex-row items-start md:items-center justify-between gap-4"
+          >
+            <div>
+              <h1
+                class="text-4xl md:text-6xl font-black tracking-tighter uppercase glitch-text"
+              >
+                BRUTAL<span class="text-red-500">RSS</span>
+              </h1>
+              <p
+                class="text-sm md:text-base font-bold mt-1 tracking-widest uppercase"
+              >
+                // Feed reader that doesn't care about your feelings
+              </p>
+            </div>
+            <div class="flex gap-3">
+              <button
+                @click="clearAll()"
+                class="brutal-btn bg-red-500 text-white font-black px-5 py-3 text-sm uppercase tracking-wider hover:bg-red-600"
+              >
+                ☠ CLEAR ALL
+              </button>
+              <button
+                @click="refreshAll()"
+                class="brutal-btn bg-blue-500 text-white font-black px-5 py-3 text-sm uppercase tracking-wider hover:bg-blue-600"
+                x-show="feeds.length > 0"
+              >
+                ⟳ REFRESH ALL
+              </button>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <!-- INPUT SECTION -->
+      <section class="brutal-border-thick bg-white border-t-0">
+        <div class="max-w-7xl mx-auto px-4 py-6 md:py-8">
+          <div class="flex flex-col md:flex-row gap-4">
+            <div class="flex-1 relative">
+              <input
+                type="url"
+                x-model="feedUrl"
+                @keyup.enter="addFeed()"
+                placeholder="PASTE RSS FEED URL HERE → https://hackaday.com/blog/feed/"
+                class="brutal-input w-full px-5 py-4 text-lg font-mono bg-gray-100"
+              />
+            </div>
+            <button
+              @click="addFeed()"
+              :disabled="loading"
+              class="brutal-btn bg-green-400 hover:bg-green-500 text-black font-black px-8 py-4 text-lg uppercase tracking-wider whitespace-nowrap disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              <span x-show="!loading">⚡ ADD FEED</span>
+              <span x-show="loading">LOADING...</span>
+            </button>
+          </div>
+
+          <!-- QUICK ADD BUTTONS -->
+          <div class="mt-4 flex flex-wrap gap-2">
+            <span
+              class="text-xs font-bold uppercase tracking-wider self-center mr-2"
+              >Quick add:</span
+            >
+            <template x-for="quick in quickFeeds" :key="quick.url">
+              <button
+                @click="feedUrl = quick.url; addFeed()"
+                class="brutal-btn bg-gray-200 hover:bg-gray-300 text-black font-bold px-3 py-1 text-xs uppercase"
+              >
+                <span x-text="quick.label"></span>
+              </button>
+            </template>
+          </div>
+        </div>
+      </section>
+
+      <!-- LOADING OVERLAY -->
+      <div
+        x-show="loading"
+        class="fixed inset-0 bg-black/80 z-50 flex items-center justify-center"
+        style="display: none"
+      >
+        <div
+          class="bg-yellow-300 brutal-border-thick brutal-shadow-lg p-8 md:p-12 text-center"
+        >
+          <div class="text-6xl mb-4 animate-bounce">⚙️</div>
+          <p class="text-2xl font-black uppercase tracking-wider">
+            Fetching feed...
+          </p>
+          <p class="text-sm font-bold mt-2">
+            Please wait, the internet is slow
+          </p>
+        </div>
+      </div>
+
+      <!-- ERROR TOAST -->
+      <div
+        x-show="showError"
+        x-transition:enter="transition ease-out duration-300"
+        x-transition:enter-start="opacity-0 -translate-y-4"
+        x-transition:enter-end="opacity-100 translate-y-0"
+        x-transition:leave="transition ease-in duration-200"
+        x-transition:leave-start="opacity-100 translate-y-0"
+        x-transition:leave-end="opacity-0 -translate-y-4"
+        class="fixed top-4 right-4 z-50 max-w-md"
+        style="display: none"
+      >
+        <div class="bg-red-500 brutal-border-thick brutal-shadow p-4">
+          <div class="flex items-start gap-3">
+            <span class="text-3xl">☠</span>
+            <div>
+              <p
+                class="font-black text-white uppercase"
+                x-text="errorMessage"
+              ></p>
+            </div>
+            <button
+              @click="showError = false"
+              class="ml-auto text-white font-black text-xl hover:text-black"
+            >
+              ✕
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- MAIN CONTENT -->
+      <main class="max-w-7xl mx-auto px-4 py-6">
+        <!-- NO FEEDS STATE -->
+        <div x-show="feeds.length === 0 && !loading" class="text-center py-20">
+          <div class="text-8xl mb-6">📡</div>
+          <h2
+            class="text-4xl md:text-5xl font-black uppercase tracking-tighter"
+          >
+            NO FEEDS YET
+          </h2>
+          <p class="text-lg font-bold mt-4 max-w-lg mx-auto text-gray-600">
+            Paste an RSS feed URL above and click ADD FEED.<br />
+            Your feeds will appear here like a proper RSS reader.
+          </p>
+          <div
+            class="mt-8 grid grid-cols-1 md:grid-cols-3 gap-4 max-w-3xl mx-auto"
+          >
+            <div class="brutal-card bg-cyan-200 p-4 text-left">
+              <span class="text-3xl">📥</span>
+              <p class="font-black mt-2 uppercase">Paste URL</p>
+              <p class="text-sm font-bold mt-1">Any RSS/Atom feed URL works</p>
+            </div>
+            <div class="brutal-card bg-pink-200 p-4 text-left">
+              <span class="text-3xl">🔍</span>
+              <p class="font-black mt-2 uppercase">We Parse It</p>
+              <p class="text-sm font-bold mt-1">
+                Converts RSS to readable cards
+              </p>
+            </div>
+            <div class="brutal-card bg-yellow-200 p-4 text-left">
+              <span class="text-3xl">👁️</span>
+              <p class="font-black mt-2 uppercase">Read It</p>
+              <p class="text-sm font-bold mt-1">
+                Clean brutalist reading experience
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- FEEDS -->
+        <template x-for="(feed, fIndex) in feeds" :key="feed.id">
+          <section class="mb-10">
+            <!-- FEED HEADER -->
+            <div
+              class="brutal-card mb-0 rounded-none"
+              :class="feedHeaderColor(fIndex)"
+            >
+              <div class="p-4 md:p-6">
+                <div
+                  class="flex flex-col md:flex-row items-start md:items-center justify-between gap-3"
+                >
+                  <div class="flex-1 min-w-0">
+                    <div class="flex items-center gap-3 flex-wrap">
+                      <h2
+                        class="text-xl md:text-2xl font-black uppercase tracking-tight truncate"
+                        x-text="feed.title || 'Unknown Feed'"
+                      ></h2>
+                      <span
+                        class="brutal-border bg-white px-2 py-0.5 text-xs font-black"
+                        x-text="feed.items.length + ' items'"
+                      ></span>
+                    </div>
+                    <p
+                      class="text-xs font-bold mt-1 text-gray-700 truncate"
+                      x-text="feed.link || ''"
+                    ></p>
+                    <p
+                      class="text-xs font-bold text-gray-500 mt-0.5"
+                      x-show="feed.description"
+                      x-text="truncateText(feed.description, 120)"
+                    ></p>
+                  </div>
+                  <div class="flex gap-2 flex-shrink-0">
+                    <button
+                      @click="removeFeed(fIndex)"
+                      class="brutal-btn bg-red-500 hover:bg-red-600 text-white font-black px-4 py-2 text-xs uppercase"
+                    >
+                      ✕ REMOVE
+                    </button>
+                    <button
+                      @click="refreshFeed(fIndex)"
+                      class="brutal-btn bg-blue-500 hover:bg-blue-600 text-white font-black px-4 py-2 text-xs uppercase"
+                    >
+                      ⟳
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- FEED ITEMS -->
+            <div
+              class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mt-4"
+            >
+              <template
+                x-for="(item, iIndex) in feed.items"
+                :key="item.link + iIndex"
+              >
+                <article
+                  class="brutal-card bg-white flex flex-col"
+                  :class="itemCardColor(iIndex)"
+                >
+                  <!-- ITEM IMAGE -->
+                  <div
+                    x-show="item.thumbnail || item.image"
+                    class="h-40 overflow-hidden brutal-border border-t-0 border-l-0 border-r-0"
+                  >
+                    <img
+                      :src="item.thumbnail || item.image"
+                      :alt="item.title"
+                      class="w-full h-full object-cover"
+                      @error="$el.style.display='none'"
+                      loading="lazy"
+                    />
+                  </div>
+
+                  <!-- ITEM CONTENT -->
+                  <div class="p-4 flex-1 flex flex-col">
+                    <div class="flex items-start justify-between gap-2 mb-2">
+                      <time
+                        class="text-xs font-bold text-gray-500 whitespace-nowrap"
+                        x-text="formatDate(item.pubDate)"
+                      ></time>
+                      <a
+                        :href="item.link"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        class="brutal-btn bg-black hover:bg-gray-800 text-white font-black px-3 py-1 text-xs uppercase flex-shrink-0"
+                      >
+                        OPEN ↗
+                      </a>
+                    </div>
+
+                    <h3
+                      class="text-base font-black uppercase tracking-tight leading-tight mb-2"
+                      x-text="item.title"
+                    ></h3>
+
+                    <div
+                      class="text-sm font-bold text-gray-700 flex-1 entry-content"
+                      x-html="stripHtml(item.content || item.description, 200)"
+                    ></div>
+
+                    <!-- TAGS / CATEGORIES -->
+                    <div
+                      x-show="item.categories && item.categories.length > 0"
+                      class="flex flex-wrap gap-1 mt-3"
+                    >
+                      <template
+                        x-for="cat in item.categories.slice(0, 3)"
+                        :key="cat"
+                      >
+                        <span
+                          class="brutal-border bg-gray-100 px-2 py-0.5 text-xs font-bold"
+                          x-text="cat"
+                        ></span>
+                      </template>
+                    </div>
+                  </div>
+                </article>
+              </template>
+            </div>
+          </section>
+        </template>
+
+        <!-- TOTAL STATS -->
+        <div
+          x-show="feeds.length > 0"
+          class="brutal-border-thick bg-black text-white mt-8"
+        >
+          <div
+            class="p-4 md:p-6 flex flex-wrap items-center justify-between gap-4"
+          >
+            <div>
+              <p
+                class="text-sm font-bold text-yellow-300 uppercase tracking-wider"
+              >
+                Total Stats
+              </p>
+              <p class="text-3xl font-black">
+                <span x-text="feeds.length"></span> FEEDS /
+                <span x-text="totalItems"></span> ARTICLES
+              </p>
+            </div>
+            <div class="text-right">
+              <p class="text-sm font-bold text-gray-400">Last updated</p>
+              <p class="text-lg font-black" x-text="lastUpdated"></p>
+            </div>
+          </div>
+        </div>
+      </main>
+
+      <!-- FOOTER -->
+      <footer
+        class="stripes-bg brutal-border-thick mt-0"
+        style="border-top: 6px solid #000"
+      >
+        <div class="max-w-7xl mx-auto px-4 py-4 text-center">
+          <p
+            class="text-sm font-black uppercase tracking-widest text-black bg-yellow-300 inline-block px-4 py-2 brutal-border"
+          >
+            BRUTAL RSS READER © 2024 // BUILT WITH TAILWIND + ALPINE // NO
+            FRAMEWORKS WERE HARMED
+          </p>
+        </div>
+      </footer>
+    </div>
+
+    <script>
+      function rssReader() {
+        return {
+          feedUrl: "",
+          loading: false,
+          feeds: [],
+          showError: false,
+          errorMessage: "",
+          quickFeeds: [
+            { label: "Hackaday", url: "https://hackaday.com/blog/feed/" },
+            { label: "TechCrunch", url: "https://techcrunch.com/feed/" },
+            {
+              label: "The Verge",
+              url: "https://www.theverge.com/rss/index.xml",
+            },
+            { label: "Hacker News", url: "https://hnrss.org/frontpage" },
+            {
+              label: "Ars Technica",
+              url: "https://feeds.arstechnica.com/arstechnica/index",
+            },
+            { label: "CSS Tricks", url: "https://css-tricks.com/feed/" },
+          ],
+
+          get totalItems() {
+            return this.feeds.reduce((sum, f) => sum + f.items.length, 0);
+          },
+
+          get lastUpdated() {
+            if (this.feeds.length === 0) return "—";
+            return new Date().toLocaleTimeString();
+          },
+
+          async addFeed() {
+            const url = this.feedUrl.trim();
+            if (!url) {
+              this.triggerError("PLEASE ENTER AN RSS FEED URL");
+              return;
+            }
+
+            this.loading = true;
+            this.showError = false;
+
+            try {
+              const apiUrl = `https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(url)}`;
+              const response = await fetch(apiUrl);
+              const data = await response.json();
+
+              if (data.status !== "ok") {
+                this.triggerError("FAILED TO PARSE FEED. CHECK THE URL.");
+                this.loading = false;
+                return;
+              }
+
+              // Check if already added
+              const exists = this.feeds.find((f) => f.link === data.feed.link);
+              if (exists) {
+                this.triggerError("THIS FEED IS ALREADY ADDED");
+                this.loading = false;
+                return;
+              }
+
+              this.feeds.unshift({
+                id: Date.now(),
+                title: data.feed.title || "Untitled",
+                link: data.feed.link || "",
+                description: data.feed.description || "",
+                items: data.items.map((item) => ({
+                  title: item.title || "Untitled",
+                  link: item.link || "#",
+                  description: item.description || "",
+                  content: item.content || "",
+                  pubDate: item.pubDate || "",
+                  thumbnail: item.thumbnail || item.enclosure?.link || "",
+                  image: item.image || "",
+                  categories: item.categories || [],
+                  author: item.author || "",
+                })),
+              });
+
+              this.feedUrl = "";
+              this.loading = false;
+            } catch (err) {
+              this.triggerError("NETWORK ERROR. COULD NOT FETCH FEED.");
+              this.loading = false;
+            }
+          },
+
+          async refreshFeed(index) {
+            const feed = this.feeds[index];
+            const url = feed.link;
+            if (!url) return;
+
+            this.loading = true;
+            try {
+              const apiUrl = `https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(url)}`;
+              const response = await fetch(apiUrl);
+              const data = await response.json();
+
+              if (data.status !== "ok") {
+                this.triggerError("FAILED TO REFRESH FEED");
+                this.loading = false;
+                return;
+              }
+
+              this.feeds[index].items = data.items.map((item) => ({
+                title: item.title || "Untitled",
+                link: item.link || "#",
+                description: item.description || "",
+                content: item.content || "",
+                pubDate: item.pubDate || "",
+                thumbnail: item.thumbnail || item.enclosure?.link || "",
+                image: item.image || "",
+                categories: item.categories || [],
+                author: item.author || "",
+              }));
+
+              this.loading = false;
+            } catch (err) {
+              this.triggerError("NETWORK ERROR ON REFRESH");
+              this.loading = false;
+            }
+          },
+
+          async refreshAll() {
+            for (let i = 0; i < this.feeds.length; i++) {
+              await this.refreshFeed(i);
+            }
+          },
+
+          removeFeed(index) {
+            this.feeds.splice(index, 1);
+          },
+
+          clearAll() {
+            if (this.feeds.length === 0) return;
+            if (confirm("ARE YOU SURE YOU WANT TO REMOVE ALL FEEDS?")) {
+              this.feeds = [];
+            }
+          },
+
+          triggerError(msg) {
+            this.errorMessage = msg;
+            this.showError = true;
+            setTimeout(() => {
+              this.showError = false;
+            }, 4000);
+          },
+
+          formatDate(dateStr) {
+            if (!dateStr) return "Unknown date";
+            try {
+              const date = new Date(dateStr);
+              if (isNaN(date.getTime())) return dateStr;
+              const now = new Date();
+              const diff = now - date;
+              const hours = Math.floor(diff / (1000 * 60 * 60));
+              const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+
+              if (hours < 1) return "Just now";
+              if (hours < 24) return `${hours}h ago`;
+              if (days < 7) return `${days}d ago`;
+              return date.toLocaleDateString("en-US", {
+                month: "short",
+                day: "numeric",
+                year: "numeric",
+              });
+            } catch {
+              return dateStr;
+            }
+          },
+
+          stripHtml(html, maxLen) {
+            if (!html) return "";
+            const tmp = document.createElement("div");
+            tmp.innerHTML = html;
+            let text = tmp.textContent || tmp.innerText || "";
+            // Remove extra whitespace
+            text = text.replace(/\s+/g, " ").trim();
+            if (text.length > maxLen) {
+              return text.substring(0, maxLen) + "...";
+            }
+            return text;
+          },
+
+          truncateText(text, maxLen) {
+            if (!text) return "";
+            if (text.length <= maxLen) return text;
+            return text.substring(0, maxLen) + "...";
+          },
+
+          feedHeaderColor(index) {
+            const colors = [
+              "bg-cyan-200",
+              "bg-pink-200",
+              "bg-yellow-200",
+              "bg-green-200",
+              "bg-purple-200",
+              "bg-orange-200",
+            ];
+            return colors[index % colors.length];
+          },
+
+          itemCardColor(index) {
+            const colors = [
+              "hover:bg-cyan-50",
+              "hover:bg-pink-50",
+              "hover:bg-yellow-50",
+              "hover:bg-green-50",
+              "hover:bg-purple-50",
+              "hover:bg-orange-50",
+            ];
+            return colors[index % colors.length];
+          },
+        };
+      }
+    </script>
+  </body>
+</html>
